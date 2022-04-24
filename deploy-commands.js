@@ -5,6 +5,7 @@ const { clientId, kyrashideaway, fluffcafe, token } = require('./config.json');
 
 const commands = [
 	new SlashCommandBuilder().setName('hay').setDescription('Eats your hay'),
+	new SlashCommandBuilder().setName('carrots').setDescription('Eats your carrots'),
 ]
 	.map(command => command.toJSON());
 
