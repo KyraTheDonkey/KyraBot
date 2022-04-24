@@ -15,14 +15,12 @@ client.login(token);
 
 client.on('messageCreate', async message => {
     if (!message.author.bot) {
-        console.log("message received \"" + message.content + "\"");
+        console.log("Message received \"" + message.content + "\"");
         if (message.content.match(/([H|h][a]+y)|(H[A]+Y)/)) {
             console.log("found hay");
-            await message.reply("Haaaay");
+            await replyHay(message);
         }
-    } else {
-        console.log("not so fast");
-    }
+    } 
     
 });
 
@@ -35,3 +33,25 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply('Monch monch!');
 	} 
 });
+
+async function replyHay(message) {
+    var num = Math.floor(Math.random() * 6);
+    if (num === 0) {
+        await message.reply("Fooood!")
+    }
+    else if (num === 1) {
+        await message.reply("Yummy!")
+    }
+    else if (num === 2) {
+        await message.reply("*nuzzles neck for the hay*")
+    }
+    else if (num === 3) {
+        await message.reply("*tail flicking*")
+    }
+    else if (num === 4) {
+        await message.reply("*nimbly steals the hay*")
+    }
+    else if (num === 5) { 
+        await message.reply("You suddenly feel a donkey breathing down your neck.")
+    }
+}
