@@ -1,20 +1,54 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const { clientId, kyrashideaway, fluffcafe, token } = require('./config.json');
+const { REST, Routes } = require("discord.js");
+const fs = require("node:fs");
+const { clientId, kyrashideaway, nsfs, token } = require("./config.json");
 
-const commands = [
-	new SlashCommandBuilder().setName('hay').setDescription('Eats your hay'),
-	new SlashCommandBuilder().setName('carrots').setDescription('Eats your carrots'),
-]
-	.map(command => command.toJSON());
+const commands = [];
+// Grab all the command files from the commands directory you created earlier
+const commandFiles = fs
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
 
-const rest = new REST({ version: '9' }).setToken(token);
+// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  commands.push(command.data.toJSON());
+}
 
-rest.put(Routes.applicationGuildCommands(clientId, kyrashideaway), { body: commands })
-	.then(() => console.log('Successfully registered application commands to Kyra\'s Hideaway.'))
-	.catch(console.error);
+// Construct and prepare an instance of the REST module
+const rest = new REST({ version: "10" }).setToken(token);
 
-    rest.put(Routes.applicationGuildCommands(clientId, fluffcafe), { body: commands })
-	.then(() => console.log('Successfully registered application commands to Fluff Cafe.'))
-	.catch(console.error);
+// and deploy your commands!
+(async () => {
+  try {
+    console.log(
+      `Started refreshing ${commands.length} application (/) commands in Kyra's Hideaway.`
+    );
+
+    // The put method is used to fully refresh all commands in the guild with the current set
+    const kyraData = await rest.put(
+      Routes.applicationGuildCommands(clientId, kyrashideaway),
+      { body: commands }
+    );
+
+    console.log(
+      `Successfully reloaded ${kyraData.length} application (/) commands in Kyra's Hideaway.`
+    );
+
+    console.log(
+      `Started refreshing ${commands.length} application (/) commands in NSFS.`
+    );
+
+    // The put method is used to fully refresh all commands in the guild with the current set
+    const nsfsData = await rest.put(
+      Routes.applicationGuildCommands(clientId, nsfs),
+      { body: commands }
+    );
+
+    console.log(
+      `Successfully reloaded ${nsfsData.length} application (/) commands in NSFS.`
+    );
+  } catch (error) {
+    // And of course, make sure you catch and log any errors!
+    console.error(error);
+  }
+})();
