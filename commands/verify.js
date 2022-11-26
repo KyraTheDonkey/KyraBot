@@ -1,10 +1,17 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { verifyChannel, roleToAdd } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('verify')
-		.setDescription('Verifies the user'),
+		.setDescription('Verifies the user')
+		.addUserOption(option =>
+			option
+				.setName('target')
+				.setDescription('The member to ban')
+				.setRequired(true)),
 	async execute(interaction) {
+		const target = interaction.options.getUser('target');
 		interaction.channel.messages.fetch()
 		.then(async messages => {
 			messages.reverse();
@@ -25,8 +32,11 @@ module.exports = {
 				.setTitle(interaction.channel.name)
 				.setDescription(`Verified by: ${interaction.member.toString()}`)
 				.addFields(messageContents)
-				.setTimestamp()
-			await interaction.reply({embeds: [embed]});
+				.setTimestamp();
+			
+			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
+			await interaction.client.channels.cache.get(verifyChannel).send({embeds: [embed]})
+			await interaction.reply("Verification Success");
 		})
 		.catch(console.error);
 	},
