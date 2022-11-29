@@ -19,25 +19,37 @@ module.exports = {
 			i = 0;
 			messages.forEach(message => {
 				var currentMessage = `${message.author}: ${message.cleanContent}\n`;
-				if (currentMessage.length + messageContents[i].value.length >= 1024) {
+				if (currentMessage.length + messageContents[i].value.length >= 128) {
 					i++;
 					messageContents[i] = {name: `Group ${i+1}`, value: ""};
 				}
 				messageContents[i].value += currentMessage;
 			});
 			console.log(messageContents);
-
-			var embed = new EmbedBuilder()
+			
+			var embeds = [];
+			messageContents.forEach(async message => {
+				var embed = new EmbedBuilder()
 				.setColor(0xDB96C8)
-				.setTitle(interaction.channel.name)
-				.setAuthor({name: `${target.username}`})
+				.setAuthor({name: `${interaction.channel.name}`})
+				.setTitle(`${target.username}`)
 				.setThumbnail(`${target.avatarURL()}`)
-				.setDescription(`Verified by: ${interaction.member.toString()}`)
-				.addFields(messageContents)
+				.setDescription(`${message.value}`)
+				.setFooter({text: `Verified by: ${interaction.member}`})
 				.setTimestamp();
+				embeds.push(embed);
+			})
+			
+			embedsLen = embeds.length;
+			console.log(`embedsLen is ${embedsLen}`);
+			var FullTimes = embedsLen / 10;
+			for (i = 0; i < FullTimes; i++) {
+				console.log(`Running time ${i}`)
+				await interaction.client.channels.cache.get(verifyChannel).send({embeds: embeds.slice(i*10, (i+1)*10)})
+			}
 			
 			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
-			await interaction.client.channels.cache.get(verifyChannel).send({embeds: [embed]})
+
 			await interaction.reply("Verification Success");
 		})
 		.catch(console.error);
