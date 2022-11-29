@@ -8,7 +8,7 @@ module.exports = {
 		.addUserOption(option =>
 			option
 				.setName('target')
-				.setDescription('The member to ban')
+				.setDescription('The member to verify')
 				.setRequired(true)),
 	async execute(interaction) {
 		const target = interaction.options.getUser('target');
@@ -30,6 +30,8 @@ module.exports = {
 			var embed = new EmbedBuilder()
 				.setColor(0xDB96C8)
 				.setTitle(interaction.channel.name)
+				.setAuthor({name: `${target.username}`})
+				.setThumbnail(`${target.avatarURL()}`)
 				.setDescription(`Verified by: ${interaction.member.toString()}`)
 				.addFields(messageContents)
 				.setTimestamp();
