@@ -19,15 +19,13 @@ module.exports = {
 			i = 0;
 			messages.forEach(message => {
 				var currentMessage = `${message.author}: ${message.cleanContent}\n`;
-				if (currentMessage.length + messageContents[i].value.length >= 128) {
+				if (currentMessage.length + messageContents[i].value.length >= 4096) {
 					i++;
 					messageContents[i] = {name: `Group ${i+1}`, value: ""};
 				}
 				messageContents[i].value += currentMessage;
 			});
-			console.log(messageContents);
 			
-			var embeds = [];
 			messageContents.forEach(async message => {
 				var embed = new EmbedBuilder()
 				.setColor(0xDB96C8)
@@ -35,18 +33,14 @@ module.exports = {
 				.setTitle(`${target.username}`)
 				.setThumbnail(`${target.avatarURL()}`)
 				.setDescription(`${message.value}`)
-				.setFooter({text: `Verified by: ${interaction.member}`})
+				.setFooter({text: `Verified by: ${interaction.member.user.username}`, iconURL: `${interaction.member.user.avatarURL()}`})
+				.addFields(
+					{ name: 'Verified Member', value: `${target.toString()}`, inline: true },
+					{ name: 'Staff', value: `${interaction.member.user.toString()}`, inline: true },
+				)
 				.setTimestamp();
-				embeds.push(embed);
+				await interaction.client.channels.cache.get(verifyChannel).send({embeds: [embed]})
 			})
-			
-			embedsLen = embeds.length;
-			console.log(`embedsLen is ${embedsLen}`);
-			var FullTimes = embedsLen / 10;
-			for (i = 0; i < FullTimes; i++) {
-				console.log(`Running time ${i}`)
-				await interaction.client.channels.cache.get(verifyChannel).send({embeds: embeds.slice(i*10, (i+1)*10)})
-			}
 			
 			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
 
