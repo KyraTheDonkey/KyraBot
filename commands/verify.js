@@ -12,6 +12,10 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const target = interaction.options.getUser('target');
+		if (!interaction.channel.name.match(/verification-\d*/)) {
+			await interaction.reply("This is not a valid channel to use this command in!");
+			return;
+		}
 		interaction.channel.messages.fetch()
 		.then(async messages => {
 			messages.reverse();
@@ -43,6 +47,7 @@ module.exports = {
 			})
 			
 			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
+			// interaction.channel.delete();
 
 			await interaction.reply("Verification Success");
 		})
