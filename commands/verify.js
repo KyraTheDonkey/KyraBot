@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { verifyChannel, roleToAdd } = require('../config.json');
+const { verifyChannel, generalChannel, rulesChannel, rolesChannel, introductionsChannel, welcomeRole, roleToAdd } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -48,6 +48,14 @@ module.exports = {
 			
 			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
 			// interaction.channel.delete();
+
+			var welcomeMessage = `Welcome ${target.toString()} to ${interaction.guild.name}! We're happy to have you here :sparkles:\n\n` +
+
+			`Make sure you read <#${rulesChannel}>, all the server's info is there too.\n` +
+			`Use <#${rolesChannel}> to self-assign your roles.\n` +
+			`Then you can introduce yourself in <#${introductionsChannel}>.\n` +
+			`(<@&${welcomeRole}>)\n`;
+			await interaction.client.channels.cache.get(generalChannel).send(welcomeMessage);
 
 			await interaction.reply("Verification Success");
 		})
