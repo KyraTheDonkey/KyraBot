@@ -47,7 +47,7 @@ module.exports = {
 			})
 			
 			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
-			// interaction.channel.delete();
+			interaction.channel.delete();
 
 			var welcomeMessage = `Welcome ${target.toString()} to ${interaction.guild.name}! We're happy to have you here :sparkles:\n\n` +
 
