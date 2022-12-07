@@ -4,17 +4,13 @@ module.exports = {
 	name: Events.MessageCreate,
 	async execute(message) {
         if (!message.author.bot) {
-            console.log("Message received \"" + message.content + "\"");
             var matchHay = message.content.match(/([H|h][a]+y)|(H[A]+Y)/);
             var matchCarrot = message.content.match(/[C|c]arrot[s]?/);
             if (matchHay && matchCarrot) {
-                console.log("found feast");
                 await replyHayAndCarrots(message);
             } else if (matchHay) {
-                console.log("found hay");
                 await replyHay(message);
             } else if (matchCarrot) {
-                console.log("found carrots");
                 await replyCarrots(message);
             }
         } 
@@ -22,6 +18,7 @@ module.exports = {
 };
 
 async function replyHay(message) {
+    console.log("Found hay in \"%s\" from %s in %s", message.content, message.member.user.username, message.channel.name);
     var num = Math.floor(Math.random() * 6);
     if (num === 0) {
         await message.reply("Fooood!")
@@ -44,6 +41,7 @@ async function replyHay(message) {
 }
 
 async function replyCarrots(message) {
+    console.log("Found carrots in \"%s\" from %s in %s", message.content, message.member.user.username, message.channel.name);
     var num = Math.floor(Math.random() * 4);
     if (num === 0) {
         await message.reply("Oooooh.")
@@ -60,6 +58,7 @@ async function replyCarrots(message) {
 }
 
 async function replyHayAndCarrots(message) {
+    console.log("Found hay and carrots in \"%s\" from %s in %s", message.content, message.member.user.username, message.channel.name);
     var num = Math.floor(Math.random() * 4);
     if (num === 0) {
         await message.reply("A FEAST!")
