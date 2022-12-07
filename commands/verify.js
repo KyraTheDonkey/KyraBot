@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { verifyChannel, generalChannel, rulesChannel, rolesChannel, introductionsChannel, welcomeRole, roleToAdd } = require('../config.json');
+const { verifyChannel, generalChannel, rulesChannel, rolesChannel, introductionsChannel, welcomeRole, serverMemberRole, level0Role } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -46,7 +46,8 @@ module.exports = {
 				await interaction.client.channels.cache.get(verifyChannel).send({embeds: [embed]})
 			})
 			
-			interaction.guild.members.cache.get(target.id).roles.add(roleToAdd);
+			interaction.guild.members.cache.get(target.id).roles.add(serverMemberRole);
+			interaction.guild.members.cache.get(target.id).roles.add(level0Role);
 			interaction.channel.delete();
 
 			var welcomeMessage = `Welcome ${target.toString()} to ${interaction.guild.name}! We're happy to have you here :sparkles:\n\n` +
