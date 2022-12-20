@@ -4,6 +4,10 @@ const { token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
+const readline = require('node:readline');
+const { stdin: input, stdout: output } = require('node:process');
+const rl = readline.createInterface({ input, output });
+
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers] });
 
@@ -38,3 +42,28 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+/*
+* Here I try to write some terminal commands so I can control my bot without needing to interact with it.
+*/
+rl.on('line', (input) => {
+	if (input.match(/s(top)?/)) {
+		rl.question('Are you sure you want to exit? ', (answer) => {
+			if (answer.match(/^y(es)?$/i)) {
+				rl.close();
+			}
+		});
+	}
+});
+
+rl.on('SIGINT', () => {
+	rl.question('Are you sure you want to exit? ', (answer) => {
+	  	if (answer.match(/^y(es)?$/i)) {
+			rl.close();
+	  	}
+	});
+});
+
+rl.on('close', () => {
+	client.destroy();
+});
