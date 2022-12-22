@@ -4,9 +4,29 @@ const { token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
+// Setting up the terminal in/out for the bot
 const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process');
 const rl = readline.createInterface({ input, output });
+
+// Set up a database for use
+const sqlite3 = require('sqlite3');
+var db = new sqlite3.Database("KyraBot.db", (err) => {
+	if (err) {
+		console.error(err.message);
+	}
+	console.log("Opened db");
+	db.run(`CREATE TABLE IF NOT EXISTS verificationRequests(
+		userID integer PRIMARY KEY,
+		serverLocation text,
+		age integer
+		)`, (err) => {
+			if (err) {
+				console.error(err.message);
+			}
+			console.log("Successfully ensured the db exists");
+		});
+});
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers] });
@@ -66,4 +86,5 @@ rl.on('SIGINT', () => {
 
 rl.on('close', () => {
 	client.destroy();
+	db.close();
 });
