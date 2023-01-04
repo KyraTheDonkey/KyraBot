@@ -35,7 +35,7 @@ module.exports = {
 				.setColor(0xDB96C8)
 				.setAuthor({name: `${interaction.channel.name}`})
 				.setTitle(`${target.username}`)
-				.setThumbnail(`${target.avatarURL()}`)
+				.setThumbnail(`${target.displayAvatarURL()}`)
 				.setDescription(`${message.value}`)
 				.setFooter({text: `Verified by: ${interaction.member.user.username}`, iconURL: `${interaction.member.user.avatarURL()}`})
 				.addFields(
