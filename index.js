@@ -9,6 +9,9 @@ const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process');
 const rl = readline.createInterface({ input, output });
 
+// Read in commands to use for terminal in/out
+const sendEmbed = require('./sendEmbed');
+
 // Set up a database for use
 const sqlite3 = require('sqlite3');
 var db = new sqlite3.Database("KyraBot.db", (err) => {
@@ -19,7 +22,11 @@ var db = new sqlite3.Database("KyraBot.db", (err) => {
 	db.run(`CREATE TABLE IF NOT EXISTS verificationRequests(
 		userID integer PRIMARY KEY,
 		serverLocation text,
-		age integer
+		age integer,
+		hobby text,
+		furry text,
+		joinReason text,
+		fursona text
 		)`, (err) => {
 			if (err) {
 				console.error(err.message);
@@ -67,12 +74,16 @@ for (const file of eventFiles) {
 * Here I try to write some terminal commands so I can control my bot without needing to interact with it.
 */
 rl.on('line', (input) => {
-	if (input.match(/s(top)?/)) {
+	if (input.match(/s(top)?$/)) {
 		rl.question('Are you sure you want to exit? ', (answer) => {
 			if (answer.match(/^y(es)?$/i)) {
 				rl.close();
 			}
 		});
+	} else if (input.match(/sendEmbed/)) {
+		let splitInput = input.split(/\s+/);
+		console.log(splitInput);
+		sendEmbed(client, splitInput[1]);
 	}
 });
 
