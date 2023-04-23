@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS verificationRequests(
+	userID integer PRIMARY KEY,
+	serverLocation text,
+	age integer,
+	hobby text,
+	furry text,
+	joinReason text,
+	fursona text
+);
+CREATE TABLE IF NOT EXISTS idVerificationLink(
+  messageID integer PRIMARY KEY,
+  userID integer FOREIGN KEY
+);

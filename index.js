@@ -18,21 +18,16 @@ var db = new sqlite3.Database("KyraBot.db", (err) => {
 	if (err) {
 		console.error(err.message);
 	}
-	console.log("Opened db");
-	db.run(`CREATE TABLE IF NOT EXISTS verificationRequests(
-		userID integer PRIMARY KEY,
-		serverLocation text,
-		age integer,
-		hobby text,
-		furry text,
-		joinReason text,
-		fursona text
-		)`, (err) => {
+  fs.readFile('initdb.txt', (err, data) => {
+    if (err) throw err;
+    dbinittext = data;
+    db.run(data.toString(), (err) => {
 			if (err) {
-				console.error(err.message);
+			 console.error(err.message);
 			}
 			console.log("Successfully ensured the db exists");
 		});
+  });
 });
 
 // Create a new client instance
