@@ -20,7 +20,7 @@ module.exports = {
         }
         console.log("Opened db for submitting a modal");
       });
-      console.log(interaction);
+      // console.log(interaction);
 
       const {
         ageInput,
@@ -71,9 +71,10 @@ module.exports = {
               .setStyle(ButtonStyle.Danger)
           );
 
-          await interaction.client.channels.cache
+          let result = await interaction.client.channels.cache
             .get(pendingVerificationChannel)
             .send({ embeds: [embed], components: [buttons] });
+          console.log(result.id);
 
           // get the last insert id
           console.log(`A row has been inserted with rowid ${this.lastID}`);
