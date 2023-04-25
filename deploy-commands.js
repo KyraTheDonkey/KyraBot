@@ -21,31 +21,31 @@ const rest = new REST({ version: "10" }).setToken(token);
 (async () => {
   try {
     console.log(
-      `Started refreshing ${commands.length} application (/) commands in Kyra's Hideaway.`
+      `Started refreshing ${commands.length} application (/) commands in Kyra's Hideaway.`,
     );
 
     // The put method is used to fully refresh all commands in the guild with the current set
     const kyraData = await rest.put(
       Routes.applicationGuildCommands(clientId, kyrashideaway),
-      { body: commands }
+      { body: commands },
     );
 
     console.log(
-      `Successfully reloaded ${kyraData.length} application (/) commands in Kyra's Hideaway.`
+      `Successfully reloaded ${kyraData.length} application (/) commands in Kyra's Hideaway.`,
     );
 
     console.log(
-      `Started refreshing ${commands.length} application (/) commands in NSFS.`
+      `Started refreshing ${commands.length} application (/) commands in NSFS.`,
     );
 
     // The put method is used to fully refresh all commands in the guild with the current set
     const nsfsData = await rest.put(
       Routes.applicationGuildCommands(clientId, nsfs),
-      { body: commands }
+      { body: commands },
     );
 
     console.log(
-      `Successfully reloaded ${nsfsData.length} application (/) commands in NSFS.`
+      `Successfully reloaded ${nsfsData.length} application (/) commands in NSFS.`,
     );
   } catch (error) {
     // And of course, make sure you catch and log any errors!

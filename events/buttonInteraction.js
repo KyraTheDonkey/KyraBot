@@ -12,13 +12,13 @@ module.exports = {
   async execute(interaction) {
     if (!interaction.isButton()) return;
     switch (interaction.customId) {
-      case 'createVerificationButton':
+      case "createVerificationButton":
         var db = new sqlite3.Database("KyraBot.db", (err) => {
           if (err) {
             console.error(err.message);
           }
           console.log(
-            "Opened db for checking if the user already has a verification"
+            "Opened db for checking if the user already has a verification",
           );
         });
         db.all(
@@ -83,19 +83,19 @@ module.exports = {
             // An action row only holds one text input,
             // so you need one action row per text input.
             const firstActionRow = new ActionRowBuilder().addComponents(
-              joinReasonInput
+              joinReasonInput,
             );
             const secondActionRow = new ActionRowBuilder().addComponents(
-              ageInput
+              ageInput,
             );
             const thirdActionRow = new ActionRowBuilder().addComponents(
-              hobbyInput
+              hobbyInput,
             );
             const fourthActionRow = new ActionRowBuilder().addComponents(
-              furryInput
+              furryInput,
             );
             const fifthActionRow = new ActionRowBuilder().addComponents(
-              fursonaInput
+              fursonaInput,
             );
 
             modal.addComponents(
@@ -103,15 +103,15 @@ module.exports = {
               secondActionRow,
               thirdActionRow,
               fourthActionRow,
-              fifthActionRow
+              fifthActionRow,
             );
 
             await interaction.showModal(modal);
-          }
+          },
         );
         db.close();
         break;
-      case 'deleteVerificationButton':
+      case "deleteVerificationButton":
         var db = new sqlite3.Database("KyraBot.db", (err) => {
           if (err) {
             console.error(err.message);
@@ -140,7 +140,8 @@ module.exports = {
                 if (err) {
                   console.log(err.message);
                   await interaction.reply({
-                    content: "Something went wrong trying to delete your verification",
+                    content:
+                      "Something went wrong trying to delete your verification",
                     ephemeral: true,
                   });
                   return;
@@ -148,10 +149,10 @@ module.exports = {
                 await interaction.reply({
                   content: "Verification Removed",
                   ephemeral: true,
-                })
-              }
+                });
+              },
             );
-          }
+          },
         );
 
         db.close();

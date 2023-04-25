@@ -1,4 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require(
+  "discord.js",
+);
 
 module.exports = (client, channel) => {
   console.log(channel);
@@ -6,8 +8,9 @@ module.exports = (client, channel) => {
   var embed = new EmbedBuilder()
     .setColor(0xdb96c8)
     .setTitle(`Verification`)
-    .setDescription(`Hello, would you like to verify? We have a lot of stuff for you to do!`);
-
+    .setDescription(
+      `Hello, would you like to verify? We have a lot of stuff for you to do!`,
+    );
 
   const buttons = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -17,8 +20,11 @@ module.exports = (client, channel) => {
     new ButtonBuilder()
       .setCustomId("deleteVerificationButton")
       .setLabel("Remove Verification")
-      .setStyle(ButtonStyle.Danger)
+      .setStyle(ButtonStyle.Danger),
   );
 
-  client.channels.cache.get(channel).send({embeds: [embed], components: [buttons]});
+  client.channels.cache.get(channel).send({
+    embeds: [embed],
+    components: [buttons],
+  });
 };

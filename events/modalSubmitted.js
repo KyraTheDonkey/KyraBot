@@ -68,7 +68,7 @@ module.exports = {
             new ButtonBuilder()
               .setCustomId("declineVerification")
               .setLabel("Decline")
-              .setStyle(ButtonStyle.Danger)
+              .setStyle(ButtonStyle.Danger),
           );
 
           let result = await interaction.client.channels.cache
@@ -82,7 +82,7 @@ module.exports = {
             content: "Verification submitted successfully!",
             ephemeral: true,
           });
-        }
+        },
       );
       db.close();
     }
@@ -93,8 +93,9 @@ const getInfoFromModal = (interaction) => {
   const ageInput = interaction.fields.getTextInputValue("ageInput");
   const hobbyInput = interaction.fields.getTextInputValue("hobbyInput");
   const furryInput = interaction.fields.getTextInputValue("furryInput");
-  const joinReasonInput =
-    interaction.fields.getTextInputValue("joinReasonInput");
+  const joinReasonInput = interaction.fields.getTextInputValue(
+    "joinReasonInput",
+  );
   const fursonaInput = interaction.fields.getTextInputValue("fursonaInput");
   return { ageInput, hobbyInput, furryInput, joinReasonInput, fursonaInput };
 };
@@ -112,7 +113,7 @@ const createEmbed = (interaction) => {
       { name: "What hobbies do you have?", value: hobbyInput },
       { name: "What does being a furry mean to you?", value: furryInput },
       { name: "Why are you interested in NSFS?", value: joinReasonInput },
-      { name: "Do you have a fursona?", value: fursonaInput }
+      { name: "Do you have a fursona?", value: fursonaInput },
     )
     .setTimestamp();
 
